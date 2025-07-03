@@ -1,16 +1,10 @@
 import os
-
-
-# ========== INSTALL ==========
-# Run this in your terminal first:
-# pip install streamlit sentence-transformers requests
-
 import streamlit as st
 from sentence_transformers import SentenceTransformer, util
 import requests
-import csv
 import pandas as pd
 
+# ========== API KEY ==========
 JSEARCH_API_KEY = os.getenv("JSEARCH_API_KEY")
 
 if not JSEARCH_API_KEY:
@@ -49,13 +43,13 @@ generate = st.button("🚀 Generate Matches")
 # ========== Constants ==========
 LOCATIONS = ["United States", "Remote United States"]
 SIMILARITY_THRESHOLD = 60.0
-MODEL_NAME = "BAAI/bge-large-en-v1.5"
+MODEL_NAME = "BAAI/bge-small-en-v1.5"
 
 # ========== Helpers ==========
 def clean_job_text(text):
     lines = text.split("\n")
     return " ".join([
-        line for line in lines if any(kw in line.lower() for kw in ["responsib", "require", "skill", "qualif"]) or len(line) > 60
+        line for line in lines if any(kw in line.lower() for kw in ["responsib", "require", "skill", "qualif"]) or len(line) > 55
     ])
 
 def best_chunk_score(chunks, job_text, model):
@@ -140,3 +134,4 @@ if generate:
             st.download_button("⬇️ Download Results", data=csv, file_name="matched_jobs.csv", mime="text/csv")
         else:
             st.warning("❌ No jobs matched your resume above the threshold.")
+
