@@ -1,3 +1,6 @@
+import os
+
+
 # ========== INSTALL ==========
 # Run this in your terminal first:
 # pip install streamlit sentence-transformers requests
@@ -8,8 +11,11 @@ import requests
 import csv
 import pandas as pd
 
-# ========== API KEY ==========
-JSEARCH_API_KEY = "6f0a7ef588msh2dbb499468c27dbp1e6434jsn7f8342dd1db7"  # 🔐 Replace with your key
+JSEARCH_API_KEY = os.getenv("JSEARCH_API_KEY")
+
+if not JSEARCH_API_KEY:
+    st.error("❌ Missing API key. Please set JSEARCH_API_KEY in Streamlit Secrets.")
+    st.stop()
 
 # ========== Streamlit UI ==========
 st.set_page_config(page_title="AI Job Matcher", layout="centered")
